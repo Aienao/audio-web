@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table v-if="audioList">
+    <table v-if="audioList.length > 0">
       <thead>
       <tr>
         <th>名称</th>
@@ -11,6 +11,7 @@
         <th>大小</th>
         <th>比特率</th>
         <th>下载</th>
+        <th>删除</th>
       </tr>
       </thead>
       <tbody>
@@ -24,6 +25,9 @@
         <td>{{ formatAudioBitRate(audio.bitRate) }}</td>
         <td>
           <button @click="downloadAudio(audio.name)">下载</button>
+        </td>
+        <td>
+          <button @click="deleteAudio(audio.name)">删除</button>
         </td>
       </tr>
       </tbody>
@@ -70,6 +74,15 @@ export default {
         window.URL.revokeObjectURL(a.href);
         document.body.removeChild(a);
       })
+    },
+    deleteAudio(audioName) {
+      let list = [];
+      list.push(audioName)
+      api.audioDelete({"nameList": list}).then(res => {
+        let data = res.data.Status;
+        console.log(data);
+        this.getAudioList();
+      });
     },
     formatAudioBitRate(bitRate) {
       return Math.floor(bitRate / 1000) + "Kbs";
