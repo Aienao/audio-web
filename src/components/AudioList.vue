@@ -73,7 +73,7 @@ export default {
     },
     deleteAudio(audioName) {
       let list = [];
-      list.push(audioName)
+      list.push(audioName);
       api.audioDelete({"nameList": list}).then(res => {
         if (res.data.Status === 'OK') {
           this.getAudioList();
