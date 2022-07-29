@@ -1,37 +1,33 @@
 <template>
   <div>
-    <table v-if="audioList.length > 0">
-      <thead>
-      <tr>
-        <th>名称</th>
-        <th>专辑</th>
-        <th>作者</th>
-        <th>时长</th>
-        <th>发行日期</th>
-        <th>大小</th>
-        <th>比特率</th>
-        <th>下载</th>
-        <th>删除</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(audio,index) of audioList" :key="index">
-        <td>{{ audio.name }}</td>
-        <td>{{ audio.album }}</td>
-        <td>{{ audio.artist }}</td>
-        <td>{{ audio.duration }}</td>
-        <td>{{ audio.date }}</td>
-        <td>{{ formatAudioSize(audio.size) }}</td>
-        <td>{{ formatAudioBitRate(audio.bitRate) }}</td>
-        <td>
-          <button @click="downloadAudio(audio.name)">下载</button>
-        </td>
-        <td>
-          <button @click="deleteAudio(audio.name)">删除</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <el-table
+        :data="audioList"
+        style="width: 100%"
+        v-if="audioList.length > 0"
+    >
+      <el-table-column type="selection" width="55"/>
+      <el-table-column property="name" label="名称"/>
+      <el-table-column property="album" label="专辑"/>
+      <el-table-column property="artist" label="作者"/>
+      <el-table-column property="duration" label="时长"/>
+      <el-table-column property="date" label="发行日期"/>
+      <el-table-column property="bitRate" label="比特率" :formatter="formatAudioBitRate"/>
+      <el-table-column property="size" label="大小" :formatter="formatAudioSize"/>
+      <el-table-column label="操作">
+        <template #default="scope">
+            <el-button type="success" circle @click="downloadAudio(scope.row.name)">
+              <el-icon style="vertical-align: middle">
+                <Download/>
+              </el-icon>
+            </el-button>
+            <el-button type="danger" circle @click="deleteAudio(scope.row.name)">
+              <el-icon style="vertical-align: middle">
+                <Delete/>
+              </el-icon>
+            </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 
 </template>
@@ -84,11 +80,11 @@ export default {
         this.getAudioList();
       });
     },
-    formatAudioBitRate(bitRate) {
-      return Math.floor(bitRate / 1000) + "Kbs";
+    formatAudioBitRate(row, column, value) {
+      return Math.floor(value / 1000) + "Kbs";
     },
-    formatAudioSize(size) {
-      return Math.floor(size / 1024 / 1024) + 'MB';
+    formatAudioSize(row, column, value) {
+      return Math.floor(value / 1024 / 1024) + 'MB';
     }
   },
   mounted() {
