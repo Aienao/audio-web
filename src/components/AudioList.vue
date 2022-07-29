@@ -15,16 +15,16 @@
       <el-table-column property="size" label="大小" :formatter="formatAudioSize"/>
       <el-table-column label="操作">
         <template #default="scope">
-            <el-button type="success" circle @click="downloadAudio(scope.row.name)">
-              <el-icon style="vertical-align: middle">
-                <Download/>
-              </el-icon>
-            </el-button>
-            <el-button type="danger" circle @click="deleteAudio(scope.row.name)">
-              <el-icon style="vertical-align: middle">
-                <Delete/>
-              </el-icon>
-            </el-button>
+          <el-button type="success" circle @click="downloadAudio(scope.row.name)">
+            <el-icon style="vertical-align: middle">
+              <Download/>
+            </el-icon>
+          </el-button>
+          <el-button type="danger" circle @click="deleteAudio(scope.row.name)">
+            <el-icon style="vertical-align: middle">
+              <Delete/>
+            </el-icon>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,9 +75,9 @@ export default {
       let list = [];
       list.push(audioName)
       api.audioDelete({"nameList": list}).then(res => {
-        let data = res.data.Status;
-        console.log(data);
-        this.getAudioList();
+        if (res.data.Status === 'OK') {
+          this.getAudioList();
+        }
       });
     },
     formatAudioBitRate(row, column, value) {
