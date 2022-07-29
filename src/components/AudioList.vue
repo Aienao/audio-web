@@ -1,9 +1,23 @@
 <template>
   <div>
+    <el-row v-if="audioList.length > 0">
+      <el-button type="success" @click="downloadAudioPack()">
+        <el-icon style="vertical-align: middle">
+          <Download/>
+        </el-icon>
+      </el-button>
+      <el-button type="danger" @click="deleteAudioList()">
+        <el-icon style="vertical-align: middle">
+          <Delete/>
+        </el-icon>
+      </el-button>
+    </el-row>
+
     <el-table
         :data="audioList"
         style="width: 100%"
         v-if="audioList.length > 0"
+        @selection-change="getSelections"
     >
       <el-table-column type="selection" width="55"/>
       <el-table-column property="name" label="名称"/>
@@ -20,7 +34,7 @@
               <Download/>
             </el-icon>
           </el-button>
-          <el-button type="danger" circle @click="deleteAudio(scope.row.name)">
+          <el-button type="danger" circle @click="deleteSingleAudio(scope.row.name)">
             <el-icon style="vertical-align: middle">
               <Delete/>
             </el-icon>
@@ -39,7 +53,8 @@ export default {
   name: 'AudioList',
   data() {
     return {
-      audioList: []
+      audioList: [],
+      checkedAudioList: [],
     }
   },
   methods: {
@@ -71,14 +86,51 @@ export default {
         document.body.removeChild(a);
       })
     },
-    deleteAudio(audioName) {
+    // 获取列表选中的文件名称并赋值给checkedAudioList
+    getSelections(items) {
+      items.forEach(item => {
+        this.checkedAudioList.push(item.name);
+      });
+    },
+    downloadAudioPack() {
+      if (this.checkedAudioList.length > 0) {
+        api.audioPackDownload({"nameList": this.checkedAudioList}).then(res => {
+          let data = res.data;
+          if (!data) {
+            return;
+          }
+          let contentDisposition = decodeURI(res.headers['content-disposition']);
+          let filePath = '';
+          filePath = contentDisposition.indexOf('filename=') > -1 ? contentDisposition.split('filename=')[1] : contentDisposition.split('fileName=')[1];
+          let fileName = filePath.substring(1, filePath.length - 1);
+          let url = window.URL.createObjectURL(new Blob([data]));
+          let a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(a.href);
+          document.body.removeChild(a);
+        })
+      }
+    },
+    deleteAudio(audioList) {
+      if (audioList && audioList.length > 0) {
+        api.audioDelete({"nameList": audioList}).then(res => {
+          if (res.data.Status === 'OK') {
+            this.getAudioList();
+          }
+        });
+      }
+    },
+    deleteSingleAudio(audioName) {
       let list = [];
       list.push(audioName);
-      api.audioDelete({"nameList": list}).then(res => {
-        if (res.data.Status === 'OK') {
-          this.getAudioList();
-        }
-      });
+      this.deleteAudio(list);
+    },
+    deleteAudioList() {
+      this.deleteAudio(this.checkedAudioList);
     },
     formatAudioBitRate(row, column, value) {
       return Math.floor(value / 1000) + "Kbs";

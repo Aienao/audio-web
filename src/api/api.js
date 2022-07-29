@@ -13,7 +13,9 @@ const api = {
         });
     },
     audioPackDownload(params) {
-        return axios.post('/api/binary/audio/pack/download', params);
+        return axios.post('/api/binary/audio/pack/download', params, {
+            responseType: 'blob'
+        });
     },
     audioDelete(params) {
         return axios.post('/api/rest/audio/delete', params);
