@@ -8,7 +8,9 @@ const api = {
         return axios.post('/api/binary/audio/convert', params);
     },
     audioDownload(params) {
-        return axios.post('/api/binary/audio/download', params);
+        return axios.post('/api/binary/audio/download', params, {
+            responseType: 'blob'
+        });
     },
     audioPackDownload(params) {
         return axios.post('/api/binary/audio/pack/download', params);
