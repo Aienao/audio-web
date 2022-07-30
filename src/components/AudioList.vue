@@ -1,15 +1,14 @@
 <template>
   <div>
     <el-row v-if="audioList.length > 0">
-      <el-button type="success" @click="downloadAudioPack()">
-        <el-icon style="vertical-align: middle">
-          <Download/>
-        </el-icon>
+      <el-button type="primary" @click="downloadAudioPack()">
+        批量下载
       </el-button>
       <el-button type="danger" @click="deleteAudioList()">
-        <el-icon style="vertical-align: middle">
-          <Delete/>
-        </el-icon>
+        批量删除
+      </el-button>
+      <el-button type="success" plain @click="getAudioList()">
+        刷新
       </el-button>
     </el-row>
 
@@ -18,6 +17,7 @@
         style="width: 100%"
         v-if="audioList.length > 0"
         @selection-change="getSelections"
+        row-key="name"
     >
       <el-table-column type="selection" width="55"/>
       <el-table-column property="name" label="名称"/>
