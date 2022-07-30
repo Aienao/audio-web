@@ -14,6 +14,15 @@
         拖拽文件到此区域 或者 <em>点我上传</em>
       </div>
     </el-upload>
+    <el-select v-model="audioFormat" placeholder="格式（默认MP3）">
+      <el-option label="mp3" value="mp3" />
+      <el-option label="flac" value="flac" />
+    </el-select>
+    <el-select v-model="audioBitRate" placeholder="比特率" v-if="audioFormat === 'mp3'">
+      <el-option label="320Kbs" value="320Kbs" />
+      <el-option label="256Kbs" value="256Kbs" />
+      <el-option label="128Kbs" value="128Kbs" />
+    </el-select>
     <el-button class="ml-3" type="success" @click="uploadFileList()">
       开始转换
     </el-button>
@@ -27,6 +36,8 @@ export default {
   data() {
     return {
       fileList: [],
+      audioFormat:'',
+      audioBitRate:'',
     }
   },
   methods: {
@@ -35,10 +46,11 @@ export default {
     },
     uploadFileList() {
       let formData = new FormData();
+      formData.append("format",this.audioFormat);
+      formData.append("birRate",this.audioBitRate);
       this.fileList.forEach(item => {
         formData.append("files", item.raw);
       });
-
       api.audioConvert(formData);
     }
   }
