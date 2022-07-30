@@ -6,16 +6,17 @@
         :auto-upload="false"
         :file-list="fileList"
         :on-change="fileListChange"
+        drag
+        action="none"
     >
-      <template #trigger>
-        <el-button type="primary">select file</el-button>
-      </template>
-
-      <el-button class="ml-3" type="success" @click="uploadFileList()">
-        upload to server
-      </el-button>
-
+      <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+      <div class="el-upload__text">
+        拖拽文件到此区域 或者 <em>点我上传</em>
+      </div>
     </el-upload>
+    <el-button class="ml-3" type="success" @click="uploadFileList()">
+      开始转换
+    </el-button>
   </div>
 </template>
 
