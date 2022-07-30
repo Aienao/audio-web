@@ -1,8 +1,6 @@
 <template>
   <div>
     <el-upload
-        ref="uploadRef"
-        class="upload-demo"
         :auto-upload="false"
         :file-list="fileList"
         :on-change="fileListChange"
@@ -29,13 +27,15 @@
     <el-button type="primary" @click="uploadFileList()">
       开始转换
     </el-button>
+    <el-button type="danger" @click="clearFileList()">
+      清空
+    </el-button>
   </div>
   <div>
     <el-table
         :data="fileList"
         style="width: 100%"
         v-if="fileList.length > 0"
-        @selection-change="getSelections"
     >
       <el-table-column type="selection" width="55"/>
       <el-table-column property="name" label="名称"/>
@@ -81,6 +81,9 @@ export default {
     },
     deleteFile(fileName) {
       this.fileList.splice(this.fileList.indexOf(this.fileList.find(element => element.name === fileName)), 1);
+    },
+    clearFileList() {
+      this.fileList = [];
     },
     formatAudioSize(row, column, value) {
       return Math.floor(value / 1024 / 1024) + 'MB';
