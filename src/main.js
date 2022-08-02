@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -13,6 +13,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
 // 先获取uuid
-axios.get('/api/rest/config/list').finally(() =>{
+axios.get('/api/rest/config/get').finally(() => {
     app.mount('#app')
 })

@@ -20,7 +20,13 @@
         row-key="name"
     >
       <el-table-column type="selection" width="55"/>
-      <el-table-column property="name" label="名称"/>
+      <!--      暂不显示封面-->
+      <!--      <el-table-column property="cover">-->
+      <!--        <template #default="scope">-->
+      <!--          <el-image :src="scope.row.cover"></el-image>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
+      <el-table-column property="title" label="名称"/>
       <el-table-column property="album" label="专辑"/>
       <el-table-column property="artist" label="作者"/>
       <el-table-column property="duration" label="时长"/>
@@ -133,7 +139,7 @@ export default {
       this.deleteAudio(this.checkedAudioList);
     },
     formatAudioBitRate(row, column, value) {
-      return Math.floor(value / 1000) + "Kbs";
+      return value + "Kbs";
     },
     formatAudioSize(row, column, value) {
       return Math.floor(value / 1024 / 1024) + 'MB';
