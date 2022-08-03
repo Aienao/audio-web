@@ -66,7 +66,7 @@ export default {
   methods: {
     getAudioList() {
       api.audioList({}).then(res => {
-        if (res && res.data.Status == 'OK') {
+        if (res && res.data.Status === 'OK') {
           this.audioList = res.data.Return;
         }
       });

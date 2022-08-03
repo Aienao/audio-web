@@ -19,7 +19,7 @@ export default {
   methods: {
     getAudioList() {
       api.audioList({}).then(res => {
-        if (res && res.data.Status == 'OK') {
+        if (res && res.data.Status === 'OK') {
           this.audioList = res.data.Return;
           this.audioList.forEach(item => {
             item.url = window.location.origin + "/api/binary/audio/download?name=" + encodeURI(item.name);

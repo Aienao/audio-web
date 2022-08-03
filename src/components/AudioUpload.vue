@@ -37,6 +37,7 @@
         :data="fileList"
         style="width: 100%"
         v-if="fileList.length > 0"
+        id="fileTab"
     >
       <el-table-column type="selection" width="55"/>
       <el-table-column property="name" label="名称"/>
@@ -56,6 +57,7 @@
 
 <script>
 import api from './../api/api';
+import {ElLoading} from 'element-plus'
 
 export default {
   name: "AudioUpload",
@@ -71,6 +73,11 @@ export default {
       this.fileList = fileList;
     },
     uploadFileList() {
+      const loading = ElLoading.service({
+        target: document.getElementById('fileTab'),
+        text: '后台处理中，请勿离开',
+        background: 'rgba(0, 0, 0, 0.7)',
+      });
       let formData = new FormData();
       formData.append("format", this.audioFormat);
       formData.append("birRate", this.audioBitRate);
@@ -78,7 +85,7 @@ export default {
         formData.append("fileList", item.raw);
       });
       // todo 回调刷新列表
-      api.audioConvert(formData);
+      api.audioConvert(formData).finally(loading.close);
     },
     deleteFile(fileName) {
       this.fileList.splice(this.fileList.indexOf(this.fileList.find(element => element.name === fileName)), 1);
