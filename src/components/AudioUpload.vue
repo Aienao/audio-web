@@ -7,6 +7,7 @@
         drag
         action="none"
         :show-file-list="false"
+        multiple
     >
       <el-icon class="el-icon--upload">
         <upload-filled/>
@@ -74,7 +75,7 @@ export default {
       formData.append("format", this.audioFormat);
       formData.append("birRate", this.audioBitRate);
       this.fileList.forEach(item => {
-        formData.append("files", item.raw);
+        formData.append("fileList", item.raw);
       });
       // todo 回调刷新列表
       api.audioConvert(formData);
