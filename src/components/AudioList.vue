@@ -54,6 +54,7 @@
 
 <script>
 import api from './../api/api';
+import {ElMessage} from "element-plus";
 
 export default {
   name: 'AudioList',
@@ -99,27 +100,34 @@ export default {
       });
     },
     downloadAudioPack() {
-      if (this.checkedAudioList.length > 0) {
-        api.audioPackDownload({"nameList": this.checkedAudioList}).then(res => {
-          let data = res.data;
-          if (!data) {
-            return;
-          }
-          let contentDisposition = decodeURI(res.headers['content-disposition']);
-          let filePath = '';
-          filePath = contentDisposition.indexOf('filename=') > -1 ? contentDisposition.split('filename=')[1] : contentDisposition.split('fileName=')[1];
-          let fileName = filePath.substring(1, filePath.length - 1);
-          let url = window.URL.createObjectURL(new Blob([data]));
-          let a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = url;
-          a.download = fileName;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(a.href);
-          document.body.removeChild(a);
-        })
+      if (this.checkedAudioList.length === 0) {
+        ElMessage({
+          showClose: true,
+          message: '请勾选下载目标',
+          type: 'error',
+          duration: 1000
+        });
+        return;
       }
+      api.audioPackDownload({"nameList": this.checkedAudioList}).then(res => {
+        let data = res.data;
+        if (!data) {
+          return;
+        }
+        let contentDisposition = decodeURI(res.headers['content-disposition']);
+        let filePath = '';
+        filePath = contentDisposition.indexOf('filename=') > -1 ? contentDisposition.split('filename=')[1] : contentDisposition.split('fileName=')[1];
+        let fileName = filePath.substring(1, filePath.length - 1);
+        let url = window.URL.createObjectURL(new Blob([data]));
+        let a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(a.href);
+        document.body.removeChild(a);
+      });
     },
     deleteAudio(audioList) {
       if (audioList && audioList.length > 0) {
@@ -136,6 +144,15 @@ export default {
       this.deleteAudio(list);
     },
     deleteAudioList() {
+      if (this.checkedAudioList.length === 0) {
+        ElMessage({
+          showClose: true,
+          message: '请勾选删除目标',
+          type: 'error',
+          duration: 1000
+        });
+        return;
+      }
       this.deleteAudio(this.checkedAudioList);
     },
     formatAudioBitRate(row, column, value) {

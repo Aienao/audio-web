@@ -58,6 +58,7 @@
 <script>
 import api from './../api/api';
 import {ElLoading} from 'element-plus'
+import {ElMessage} from 'element-plus'
 
 export default {
   name: "AudioUpload",
@@ -73,6 +74,15 @@ export default {
       this.fileList = fileList;
     },
     uploadFileList() {
+      if (this.fileList.length === 0) {
+        ElMessage({
+          showClose: true,
+          message: '请上传文件',
+          type: 'error',
+          duration: 1000
+        });
+        return;
+      }
       const loading = ElLoading.service({
         target: document.getElementById('fileTab'),
         text: '后台处理中，请勿离开',
