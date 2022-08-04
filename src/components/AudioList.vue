@@ -54,7 +54,6 @@
 
 <script>
 import api from './../api/api';
-import {ElMessage} from "element-plus";
 
 export default {
   name: 'AudioList',
@@ -101,7 +100,7 @@ export default {
     },
     downloadAudioPack() {
       if (this.checkedAudioList.length === 0) {
-        ElMessage({
+        this.$message({
           showClose: true,
           message: '请勾选下载目标',
           type: 'error',
@@ -145,7 +144,7 @@ export default {
     },
     deleteAudioList() {
       if (this.checkedAudioList.length === 0) {
-        ElMessage({
+        this.$message({
           showClose: true,
           message: '请勾选删除目标',
           type: 'error',
