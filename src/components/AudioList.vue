@@ -16,7 +16,7 @@
         :data="audioList"
         style="width: 100%"
         v-if="audioList.length > 0"
-        @selection-change="getSelections"
+        @selection-change="updateCheckedAudioList"
         row-key="name"
     >
       <el-table-column type="selection" width="55"/>
@@ -54,23 +54,19 @@
 
 <script>
 import api from './../api/api';
+import {mapState, mapActions, mapMutations} from 'vuex'
 
 export default {
   name: 'AudioList',
   data() {
-    return {
-      audioList: [],
-      checkedAudioList: [],
-    }
+    return {}
+  },
+  computed: {
+    ...mapState('Audio', ['audioList', 'checkedAudioList']),
   },
   methods: {
-    getAudioList() {
-      api.audioList({}).then(res => {
-        if (res && res.data.Status === 'OK') {
-          this.audioList = res.data.Return;
-        }
-      });
-    },
+    ...mapActions('Audio', ['getAudioList']),
+    ...mapMutations('Audio', ['updateCheckedAudioList']),
     downloadAudio(audioName) {
       api.audioDownload({"name": audioName}).then(res => {
         let data = res.data;
@@ -91,12 +87,6 @@ export default {
         window.URL.revokeObjectURL(a.href);
         document.body.removeChild(a);
       })
-    },
-    // 获取列表选中的文件名称并赋值给checkedAudioList
-    getSelections(items) {
-      items.forEach(item => {
-        this.checkedAudioList.push(item.name);
-      });
     },
     downloadAudioPack() {
       if (this.checkedAudioList.length === 0) {
