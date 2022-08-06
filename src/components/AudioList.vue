@@ -1,20 +1,22 @@
 <template>
   <div>
-    <h3 v-if="autoClean">文件将保留{{ retainDays }}天，请及时下载！</h3>
-    <el-row v-if="audioList.length > 0">
+    <div v-if="audioList.length > 0">
       <el-button color="#626aef" @click="playAllAudio()">
         播放全部
       </el-button>
+      <el-divider direction="vertical"/>
       <el-button type="primary" @click="downloadAudioPack()">
         批量下载
       </el-button>
+      <el-divider direction="vertical"/>
       <el-button type="danger" @click="deleteAudioList()">
         批量删除
       </el-button>
+      <el-divider direction="vertical"/>
       <el-button type="success" plain @click="getAudioList()">
         刷新
       </el-button>
-    </el-row>
+    </div>
     <el-table
         :data="audioList"
         style="width: 100%"
@@ -33,7 +35,7 @@
       <el-table-column property="album" label="专辑"/>
       <el-table-column property="artist" label="作者"/>
       <el-table-column property="duration" label="时长"/>
-      <el-table-column property="date" label="发行日期"/>
+      <el-table-column property="date" label="发行时间"/>
       <el-table-column property="bitRate" label="比特率" :formatter="formatAudioBitRate"/>
       <el-table-column property="size" label="大小" :formatter="formatAudioSize"/>
       <el-table-column label="操作">
@@ -71,7 +73,6 @@ export default {
   },
   computed: {
     ...mapState('Audio', ['audioList', 'checkedAudioList']),
-    ...mapState('Config', ['autoClean', 'retainDays']),
   },
   methods: {
     ...mapActions('Audio', ['getAudioList', 'deleteAudio']),
