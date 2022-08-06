@@ -48,7 +48,7 @@ export default {
             }
         },
         updateCheckedAudioList(state, value) {
-            state.checkedAudioList = [];
+            state.checkedAudioList.splice(0, state.checkedAudioList.length);
             value.forEach(item => {
                 state.checkedAudioList.push(item.fileName);
             });

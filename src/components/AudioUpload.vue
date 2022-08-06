@@ -95,16 +95,16 @@ export default {
       });
       api.audioConvert(formData).then(res => {
         if (res && res.data.Status === 'OK') {
-          this.fileList = [];
+          this.clearFileList();
           this.getAudioList();
         }
       }).finally(loading.close);
     },
     deleteFile(fileName) {
-      this.fileList.splice(this.fileList.indexOf(this.fileList.find(element => element.name === fileName)), 1);
+      this.fileList.splice(this.fileList.findIndex(item => item.name === fileName), 1);
     },
     clearFileList() {
-      this.fileList = [];
+      this.fileList.splice(0, this.fileList.length);
     },
     formatAudioSize(row, column, value) {
       return Math.floor(value / 1024 / 1024) + 'MB';
