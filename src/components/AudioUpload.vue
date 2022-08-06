@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="uploadBox">
     <el-upload
         :auto-upload="false"
         :file-list="fileList"
@@ -37,7 +37,6 @@
         :data="fileList"
         style="width: 100%"
         v-if="fileList.length > 0"
-        id="fileTab"
     >
       <el-table-column type="selection" width="55"/>
       <el-table-column property="name" label="名称"/>
@@ -57,6 +56,7 @@
 
 <script>
 import api from './../api/api';
+import {mapActions} from 'vuex'
 
 export default {
   name: "AudioUpload",
@@ -68,6 +68,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('Audio', ['getAudioList']),
     fileListChange(file, fileList) {
       this.fileList = fileList;
     },
@@ -82,7 +83,7 @@ export default {
         return;
       }
       const loading = this.$loading({
-        target: document.getElementById('fileTab'),
+        target: document.getElementById('uploadBox'),
         text: '后台处理中，请勿离开',
         background: 'rgba(0, 0, 0, 0.7)',
       });
@@ -92,8 +93,12 @@ export default {
       this.fileList.forEach(item => {
         formData.append("fileList", item.raw);
       });
-      // todo 回调刷新列表
-      api.audioConvert(formData).finally(loading.close);
+      api.audioConvert(formData).then(res => {
+        if (res && res.data.Status === 'OK') {
+          this.fileList = [];
+          this.getAudioList();
+        }
+      }).finally(loading.close);
     },
     deleteFile(fileName) {
       this.fileList.splice(this.fileList.indexOf(this.fileList.find(element => element.name === fileName)), 1);
