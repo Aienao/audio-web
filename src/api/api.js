@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = {
-    audioList(params) {
-        return axios.post('/api/rest/audio/list', params);
+    audioList() {
+        return axios.post('/api/rest/audio/list', {});
     },
     audioConvert(params) {
         return axios.post('/api/binary/audio/convert', params);
@@ -20,6 +20,9 @@ const api = {
     audioDelete(params) {
         return axios.post('/api/rest/audio/delete', params);
     },
+    getConfig() {
+        return axios.post('/api/rest/config/get', {});
+    }
 }
 
 export default api;

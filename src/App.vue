@@ -15,8 +15,10 @@ export default {
   components: {AudioList, AudioUpload, AudioPlayer},
   methods: {
     ...mapActions('Audio', ['getAudioList']),
+    ...mapActions('Config', ['getConfig']),
   },
   mounted() {
+    this.getConfig();
     this.getAudioList();
   }
 }

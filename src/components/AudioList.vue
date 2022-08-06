@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3 v-if="autoClean">文件将保留{{ retainDays }}天，请及时下载！</h3>
     <el-row v-if="audioList.length > 0">
       <el-button color="#626aef" @click="playAllAudio()">
         播放全部
@@ -14,7 +15,6 @@
         刷新
       </el-button>
     </el-row>
-
     <el-table
         :data="audioList"
         style="width: 100%"
@@ -71,6 +71,7 @@ export default {
   },
   computed: {
     ...mapState('Audio', ['audioList', 'checkedAudioList']),
+    ...mapState('Config', ['autoClean', 'retainDays']),
   },
   methods: {
     ...mapActions('Audio', ['getAudioList', 'deleteAudio']),

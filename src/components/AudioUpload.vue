@@ -63,8 +63,8 @@ export default {
   data() {
     return {
       fileList: [],
-      audioFormat: '',
-      audioBitRate: '',
+      audioFormat: null,
+      audioBitRate: null,
     }
   },
   methods: {
