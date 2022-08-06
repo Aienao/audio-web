@@ -127,9 +127,20 @@ export default {
       });
     },
     deleteSingleAudio(audioName) {
-      let list = [];
-      list.push(audioName);
-      this.deleteAudio(list);
+      this.$messageBox.confirm('确定删除？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let list = [];
+        list.push(audioName);
+        this.deleteAudio(list);
+        this.$message({
+          type: 'success',
+          message: '删除成功!',
+          duration: 1000
+        });
+      });
     },
     deleteAudioList() {
       if (this.checkedAudioList.length === 0) {
@@ -141,7 +152,18 @@ export default {
         });
         return;
       }
-      this.deleteAudio(this.checkedAudioList);
+      this.$messageBox.confirm('确定删除？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteAudio(this.checkedAudioList);
+        this.$message({
+          type: 'success',
+          message: '删除成功!',
+          duration: 1000
+        });
+      });
     },
     formatAudioBitRate(row, column, value) {
       return value + "Kbs";
