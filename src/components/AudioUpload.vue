@@ -19,8 +19,8 @@
     <div v-if="fileList.length > 0">
       <el-divider/>
       <el-select v-model="audioFormat" placeholder="格式（默认MP3）">
-        <el-option label="mp3" value="mp3"/>
-        <el-option label="flac" value="flac"/>
+        <el-option label="MP3" value="mp3"/>
+        <el-option label="FLAC" value="flac"/>
       </el-select>
       <el-divider direction="vertical" v-if="audioFormat === 'mp3'"/>
       <el-select v-model="audioBitRate" placeholder="比特率" v-if="audioFormat === 'mp3'">
