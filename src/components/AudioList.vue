@@ -78,7 +78,7 @@ export default {
     ...mapActions('Audio', ['getAudioList', 'deleteAudio']),
     ...mapMutations('Audio', ['updateCheckedAudioList', 'playAllAudio', 'switchAudio']),
     downloadAudio(audioName) {
-      api.audioDownload({"name": audioName}).then(res => {
+      api.audioDownload(audioName).then(res => {
         let data = res.data;
         if (!data) {
           return;
