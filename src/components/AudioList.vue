@@ -1,6 +1,9 @@
 <template>
   <div>
     <el-row v-if="audioList.length > 0">
+      <el-button color="#626aef" @click="playAllAudio()">
+        播放全部
+      </el-button>
       <el-button type="primary" @click="downloadAudioPack()">
         批量下载
       </el-button>
@@ -17,7 +20,7 @@
         style="width: 100%"
         v-if="audioList.length > 0"
         @selection-change="updateCheckedAudioList"
-        row-key="name"
+        row-key="fileName"
     >
       <el-table-column type="selection" width="55"/>
       <!--      暂不显示封面-->
@@ -35,12 +38,17 @@
       <el-table-column property="size" label="大小" :formatter="formatAudioSize"/>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button type="success" circle @click="downloadAudio(scope.row.name)">
+          <el-button color="#626aef" circle @click="switchAudio(scope.row.fileName)">
+            <el-icon style="vertical-align: middle">
+              <Headset/>
+            </el-icon>
+          </el-button>
+          <el-button type="primary" circle @click="downloadAudio(scope.row.fileName)">
             <el-icon style="vertical-align: middle">
               <Download/>
             </el-icon>
           </el-button>
-          <el-button type="danger" circle @click="deleteSingleAudio(scope.row.name)">
+          <el-button type="danger" circle @click="deleteSingleAudio(scope.row.fileName)">
             <el-icon style="vertical-align: middle">
               <Delete/>
             </el-icon>
@@ -65,8 +73,8 @@ export default {
     ...mapState('Audio', ['audioList', 'checkedAudioList']),
   },
   methods: {
-    ...mapActions('Audio', ['getAudioList']),
-    ...mapMutations('Audio', ['updateCheckedAudioList']),
+    ...mapActions('Audio', ['getAudioList', 'deleteAudio']),
+    ...mapMutations('Audio', ['updateCheckedAudioList', 'playAllAudio', 'switchAudio']),
     downloadAudio(audioName) {
       api.audioDownload({"name": audioName}).then(res => {
         let data = res.data;
@@ -118,15 +126,6 @@ export default {
         document.body.removeChild(a);
       });
     },
-    deleteAudio(audioList) {
-      if (audioList && audioList.length > 0) {
-        api.audioDelete({"nameList": audioList}).then(res => {
-          if (res.data.Status === 'OK') {
-            this.getAudioList();
-          }
-        });
-      }
-    },
     deleteSingleAudio(audioName) {
       let list = [];
       list.push(audioName);
@@ -151,9 +150,6 @@ export default {
       return Math.floor(value / 1024 / 1024) + 'MB';
     }
   },
-  mounted() {
-    this.getAudioList();
-  }
 }
 </script>
 
