@@ -16,45 +16,44 @@
         拖拽文件到此区域 或者 <em>点我上传</em>
       </div>
     </el-upload>
-  </div>
-  <div v-if="fileList.length > 0">
-    <el-divider>上传列表</el-divider>
-    <el-select v-model="audioFormat" placeholder="格式（默认MP3）">
-      <el-option label="mp3" value="mp3"/>
-      <el-option label="flac" value="flac"/>
-    </el-select>
-    <el-divider direction="vertical" v-if="audioFormat === 'mp3'"/>
-    <el-select v-model="audioBitRate" placeholder="比特率" v-if="audioFormat === 'mp3'">
-      <el-option label="320Kbs" value="320Kbs"/>
-      <el-option label="256Kbs" value="256Kbs"/>
-      <el-option label="128Kbs" value="128Kbs"/>
-    </el-select>
-    <el-divider direction="vertical"/>
-    <el-button type="primary" @click="uploadFileList()">
-      开始转换
-    </el-button>
-    <el-divider direction="vertical"/>
-    <el-button type="danger" @click="clearFileList()">
-      清空
-    </el-button>
-    <el-table
-        :data="fileList"
-        style="width: 100%;"
-        v-if="fileList.length > 0"
-    >
-      <el-table-column type="selection" width="55"/>
-      <el-table-column property="name" label="名称"/>
-      <el-table-column property="size" label="大小" :formatter="formatAudioSize"/>
-      <el-table-column label="操作">
-        <template #default="scope">
-          <el-button type="danger" circle @click="deleteFile(scope.row.name)">
-            <el-icon style="vertical-align: middle">
-              <Delete/>
-            </el-icon>
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div v-if="fileList.length > 0">
+      <el-divider/>
+      <el-select v-model="audioFormat" placeholder="格式（默认MP3）">
+        <el-option label="mp3" value="mp3"/>
+        <el-option label="flac" value="flac"/>
+      </el-select>
+      <el-divider direction="vertical" v-if="audioFormat === 'mp3'"/>
+      <el-select v-model="audioBitRate" placeholder="比特率" v-if="audioFormat === 'mp3'">
+        <el-option label="320Kbs" value="320Kbs"/>
+        <el-option label="256Kbs" value="256Kbs"/>
+        <el-option label="128Kbs" value="128Kbs"/>
+      </el-select>
+      <el-divider direction="vertical"/>
+      <el-button type="primary" @click="uploadFileList()">
+        开始转换
+      </el-button>
+      <el-divider direction="vertical"/>
+      <el-button type="danger" @click="clearFileList()">
+        清空
+      </el-button>
+      <el-table
+          :data="fileList"
+          style="width: 100%;"
+          v-if="fileList.length > 0"
+      >
+        <el-table-column property="name" label="名称"/>
+        <el-table-column property="size" label="大小" :formatter="formatAudioSize"/>
+        <el-table-column label="操作">
+          <template #default="scope">
+            <el-button type="danger" circle @click="deleteFile(scope.row.name)">
+              <el-icon style="vertical-align: middle">
+                <Delete/>
+              </el-icon>
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 

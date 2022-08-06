@@ -34,9 +34,9 @@
       <el-table-column property="title" label="名称"/>
       <el-table-column property="album" label="专辑"/>
       <el-table-column property="artist" label="作者"/>
-      <el-table-column property="duration" label="时长"/>
       <el-table-column property="date" label="发行时间"/>
       <el-table-column property="bitRate" label="比特率" :formatter="formatAudioBitRate"/>
+      <el-table-column property="duration" label="时长"/>
       <el-table-column property="size" label="大小" :formatter="formatAudioSize"/>
       <el-table-column label="操作">
         <template #default="scope">
