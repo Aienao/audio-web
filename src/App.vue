@@ -15,8 +15,13 @@
         <AudioList/>
         <AudioPlayer/>
       </el-main>
-      <el-footer style="text-align: center;font-size: 14px;"><span><a
-          href="https://github.com/Aienao" target="_blank">Powered by AudioCoder</a></span></el-footer>
+      <el-footer style="text-align: center;font-size: 14px;">
+        <span>
+          <a href="https://github.com/Aienao/audio" target="_blank">
+            Powered by AudioCoder
+          </a>
+        </span>
+      </el-footer>
     </el-container>
   </div>
 </template>
